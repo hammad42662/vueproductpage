@@ -5,7 +5,8 @@
         <img
           :src="currentItem.src"
           :alt="currentItem.alt"
-          class="w-1/2 h-full object-contain ml-24"
+          @click="openModal"
+          class="w-1/2 h-full object-contain ml-24 cursor-pointer"
         />
         <div class="absolute inset-y-2/4 left-0 flex gap-x-4 items-center">
           <div @click="prevItem" class="arrow left-arrow text-blue-900">&lt;</div>
@@ -71,8 +72,72 @@
           Add To Basket
         </button>
       </div>
-      <!-- <- Modal-->
-      <div class="hidden w-full h-3/5 absolute bg-slate-300">qwq</div>
+    </div>
+    <div
+      v-if="modalVisible"
+      class="modal bg-white border-2 border-black fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg"
+    >
+      <div class="flex gap-4 pt-8 pl-16 space relative">
+        <div class="flex gap-6 pb-3">
+          <button
+            class="underline decoration-orange-400 underline-offset-14 font-poppins font-normal"
+          >
+            VIDEOS
+          </button>
+          <button
+            class="underline decoration-orange-400 underline-offset-14 font-poppins font-normal"
+          >
+            IMAGES
+          </button>
+        </div>
+        <button
+          @click="closeModal"
+          class="absolute bottom-30 left-85 text-md font-bold text-gray-900 hover:text-gray-600"
+        >
+          &#x2715;
+        </button>
+      </div>
+      <hr class="-mt-1 border w-11/12 ml-10 mb-2" />
+      <div class="flex flex-row">
+        <div class="flex flex-col overflow-y-scroll w-9/12 items-center mt-4 ml-3">
+          <video class="w-62 h-full" controls autoplay>
+            <source src="/media/videos/productvideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="w-70 h-12 bg-gray-100 flex flex-row justify-end">
+            <button>
+              <img
+                src="/media/icons/share-icon.svg"
+                alt="share icon"
+                aria-label="Click to share video"
+                class="w-5 mr-3 mt-2"
+              />
+            </button>
+          </div>
+          <div class="self-start ml-48">
+            <h1 class="font-poopins font-regular text-lg mt-2 mb-2">Samsung Galaxy S23+</h1>
+            <h2 class="text-xs">Samsung Mobile (UK) - MI</h2>
+          </div>
+        </div>
+        <div class="w-2/6 flex flex-col">
+          <p
+            class="border-0 rounded bg-gray-100 text-xs font-poppins font-semibold px-4 py-2 ml-2 mt-4 mb-3 w-4/5"
+          >
+            Videos for this product
+          </p>
+          <div class="flex flex-row ml-6">
+            <img
+              src="/media/assets/video-thumbnail.png"
+              alt="video thumbnail"
+              class="w-32 border-2 rounded border-yellow-500"
+            />
+            <div class="ml-2">
+              <p class="text-xs">Samsung Galaxy S23+</p>
+              <p class="text-xs">Samsung Mobile(UK) - MI</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
@@ -83,13 +148,18 @@ const items = [
   { type: 'image', src: '/media/assets/front.jpg', alt: 'Image 1' },
   { type: 'image', src: '/media/assets/dimension.jpg', alt: 'Image 2' },
   { type: 'image', src: '/media/assets/poster.jpg', alt: 'Image 3' },
-  { type: 'video', src: '/media/assets/videoimage.png', alt: 'Video' }
+  { type: 'video', src: '/media/assets/videothumbnail.jpg', alt: 'Video' }
 ]
 
 let currentIndex = ref(0)
+const modalVisible = ref(false)
 
 const currentItem = computed(() => items[currentIndex.value])
+const activeTab = ref('images')
 
+const changeTab = (tab) => {
+  activeTab.value = tab
+}
 const nextItem = () => {
   currentIndex.value = (currentIndex.value + 1) % items.length
 }
@@ -100,6 +170,17 @@ const prevItem = () => {
 
 const goToItem = (index) => {
   currentIndex.value = index
+}
+
+const openModal = () => {
+  if (currentItem.value.type === 'video') {
+    // Open modal only for video type
+    modalVisible.value = true
+  }
+}
+
+const closeModal = () => {
+  modalVisible.value = false
 }
 </script>
 
@@ -135,7 +216,13 @@ const goToItem = (index) => {
   height: 10px;
   margin: 0 5px;
   border-radius: 50%;
+  border: 2px solid black;
   background-color: #ccc;
   cursor: pointer;
+}
+.modal {
+  width: 95%;
+  height: 78.3%;
+  margin: 0 auto;
 }
 </style>

@@ -17,4 +17,19 @@ body {
   .w-27 {
     width: 27.2%;
   }
+  .left-85 {
+    left: 98.5%;
+  }
+  .bottom-30 {
+    bottom: 55%;
+  }
+  .underline-offset-14 {
+    text-underline-offset: 14px;
+  }
+  .w-62 {
+    width: 62%;
+  }
+  .w-70 {
+    width: 62%;
+  }
 }
