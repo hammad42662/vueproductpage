@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 const props = defineProps({
   modalVisible: Boolean,
   changeTab: Function,
@@ -10,6 +11,42 @@ const props = defineProps({
   isMobile: Boolean,
   goToItem: Function
 })
+const magnifyingArea = ref(null)
+const magnifyingImg = ref(null)
+const handleClick = (event) => {
+  const clientX = event.clientX - magnifyingArea.value.offsetLeft
+  const clientY = event.clientY - magnifyingArea.value.offsetTop
+  const mWidth = magnifyingArea.value.offsetWidth
+  const mHeight = magnifyingArea.value.offsetHeight
+
+  const transformedX = (clientX / mWidth) * 100
+  const transformedY = (clientY / mHeight) * 100
+
+  magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+
+  // Add the mousemove event listener after the click
+  window.addEventListener('mousemove', handleMouseMove)
+
+  // Add the mouseleave event listener to reset the transformation when leaving the area
+  magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
+}
+
+const handleMouseMove = (event) => {
+  const clientX = event.clientX - magnifyingArea.value.offsetLeft
+  const clientY = event.clientY - magnifyingArea.value.offsetTop
+  const mWidth = magnifyingArea.value.offsetWidth
+  const mHeight = magnifyingArea.value.offsetHeight
+
+  const transformedX = (clientX / mWidth) * 100
+  const transformedY = (clientY / mHeight) * 100
+
+  magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+}
+
+const handleMouseLeave = () => {
+  magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
+  window.removeEventListener('mousemove', handleMouseMove)
+}
 </script>
 <template>
   <!-- Mobile Modal -->
@@ -52,7 +89,7 @@ const props = defineProps({
   <!-- Desktop Modal -->
   <div
     v-else-if="props.modalVisible"
-    class="modal bg-white border fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg"
+    class="modal bg-white border fixed inset-3 left-10 overflow-hidden z-50 rounded-lg"
   >
     <div class="flex gap-4 pt-8 pl-16 space relative">
       <div class="flex gap-6 pb-3">
@@ -122,16 +159,21 @@ const props = defineProps({
     </div>
     <!-- Images Content -->
     <div class="flex flex-row">
-      <div
-        v-if="props.activeTab === 'images'"
-        class="flex justify-center items-center w-4/5 overflow-y-scroll"
-      >
-        <img
-          v-if="props.currentIndex"
-          :src="props.currentItem.src"
-          :alt="props.currentItem.alt"
-          class="w-96 h-full"
-        />
+      <div class="w-4/5 h-auto flex justify-center items-center">
+        <div
+          v-if="props.activeTab === 'images'"
+          class="items-center w-full h-full overflow-hidden"
+          ref="magnifyingArea"
+          @click="handleClick"
+        >
+          <img
+            v-if="props.currentIndex"
+            :src="props.currentItem.src"
+            :alt="props.currentItem.alt"
+            class="w-2/4 h-4/5 object-contain absolute left-1/3 top-80 m-2 -translate-y-1/2 -translate-x-1/2 poi"
+            ref="magnifyingImg"
+          />
+        </div>
       </div>
       <div class="w-1/4 h-full">
         <div class="mt-5">
@@ -165,7 +207,7 @@ const props = defineProps({
 <style>
 .modal {
   width: 95%;
-  height: 78.3%;
+  height: 90%;
   margin: 0 auto;
 }
 </style>
