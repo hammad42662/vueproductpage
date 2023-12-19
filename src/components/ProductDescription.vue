@@ -1,8 +1,10 @@
 <template>
   <div class="md:mt-10 xs-mt-0 xs:ml-4 md:ml-0">
-    <div class="flex md:gap-80 xs:gap-28 mb-2">
+    <div class="flex justify-between mb-2">
       <p class="text-gray-400 font-medium font-poppins">SAMSUNG</p>
-      <p class="text-green-700 md:text-base xs:text-xs font-medium font-poppins whitespace-nowrap">
+      <p
+        class="text-green-700 xs:mr-2 md:text-base xs:text-xs font-medium font-poppins whitespace-nowrap"
+      >
         Hurry Limited Stock
       </p>
     </div>
@@ -30,13 +32,16 @@
     </div>
     <hr class="border-1 border-gray-300 my-2" />
     <div class="flex flex-row items-center md:justify-start xs:justify-center gap-1 mt-5 mb-5">
-      <button class="bg-transparent text-5xl text-gray-500">-</button>
-      <span class="bg-gray-200 px-7 py-2 text-blue-500 font-medium font-poppins">1</span>
-      <button class="bg-transparent text-4xl text-gray-500">+</button>
+      <button class="bg-transparent md:text-5xl xs:text-xl text-gray-500">-</button>
+      <span
+        class="bg-gray-200 md:px-7 md:py-2 xs:px-4 xs:py-1 text-blue-500 font-medium font-poppins"
+        >1</span
+      >
+      <button class="bg-transparent md:text-4xl xs:text-xl text-gray-500">+</button>
     </div>
-    <div class="flex xs:justify-center">
+    <div class="flex xs:justify-center -ml-6">
       <button
-        class="bg-yellow-400 w-full md:px-52 xs:px-24 py-2 md:text-lg xs:text-sm font-medium font-poppins rounded-sm"
+        class="bg-yellow-400 w-11/12 md:px-52 xs:px-24 py-2 md:text-lg xs:text-sm font-medium font-poppins rounded-sm"
       >
         Add To Basket
       </button>

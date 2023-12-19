@@ -3,9 +3,9 @@ const props = defineProps({
   modalVisible: Boolean,
   changeTab: Function,
   activeTab: String,
-  closeModal: Function,
+  toggleModal: Function,
   currentIndex: Number,
-  currentItem: Function,
+  currentItem: Object,
   images: Object,
   goToItem: Function
 })
@@ -13,7 +13,7 @@ const props = defineProps({
 <template>
   <div
     v-if="props.modalVisible"
-    class="modal bg-white border fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg xs:hidden md:block"
+    class="modal bg-white border fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg xs:hidden xs:landscape:hidden md:landscape:block md:block"
   >
     <div class="flex gap-4 pt-8 pl-16 space relative">
       <div class="flex gap-6 pb-3">
@@ -33,7 +33,7 @@ const props = defineProps({
         </button>
       </div>
       <button
-        @click="props.closeModal"
+        @click="props.toggleModal"
         class="absolute bottom-30 left-85 text-md font-bold text-gray-900 hover:text-gray-600"
       >
         &#x2715;
@@ -82,10 +82,13 @@ const props = defineProps({
       </div>
     </div>
     <!-- Images Content -->
-    <div v-if="props.activeTab === 'images'" class="flex flex-row overflow-y-scroll">
-      <div class="flex justify-center items-center w-4/5 overflow-hidden">
+    <div class="flex flex-row">
+      <div
+        v-if="props.activeTab === 'images'"
+        class="flex justify-center items-center w-4/5 overflow-y-scroll"
+      >
         <img
-          v-if="props.currentIndex === 0"
+          v-if="props.currentIndex"
           :src="props.currentItem.src"
           :alt="props.currentItem.alt"
           class="w-96 h-full"
@@ -106,7 +109,7 @@ const props = defineProps({
           <p class="text-xs text-gray-400 font-poppins font-thin">Style Name: S23 Ultra</p>
           <p class="text-xs text-gray-400 font-poppins font-thin">Pattern Name: Smartphone only</p>
         </div>
-        <div class="thumbnail-container flex gap-4 content-center -mt-16">
+        <div class="flex gap-4 content-center -mt-16">
           <div
             v-for="(item, index) in props.images"
             :key="index"

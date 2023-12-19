@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
-  currentItem: Function,
-  openModal: Function,
+  currentItem: Object,
+  toggleModal: Function,
   prevItem: Function,
   nextItem: Function,
   images: Object,
@@ -16,7 +16,7 @@ const props = defineProps({
       <img
         :src="props.currentItem.src"
         :alt="currentItem.alt"
-        @click="props.openModal"
+        @click="props.toggleModal"
         class="max-w-2/2 h-full object-contain md:ml-24 xs:ml-28 cursor-pointer"
       />
     </div>

@@ -2,6 +2,7 @@
 import ProductModal from './ProductModal.vue'
 import ProductDescription from './ProductDescription.vue'
 import ProductImage from './ProductImage.vue'
+
 import { ref, computed } from 'vue'
 const images = [
   { type: 'image', src: '/media/assets/front.jpg', alt: 'Image 1' },
@@ -30,8 +31,8 @@ const goToItem = (index) => {
   currentIndex.value = index
 }
 
-const openModal = () => {
-  modalVisible.value = true
+const toggleModal = () => {
+  modalVisible.value = !modalVisible.value
 
   // Set active tab based on the type of the current item
   if (currentItem.value.type === 'video') {
@@ -39,10 +40,6 @@ const openModal = () => {
   } else {
     activeTab.value = 'images'
   }
-}
-
-const closeModal = () => {
-  modalVisible.value = false
 }
 </script>
 <template>
@@ -57,7 +54,7 @@ const closeModal = () => {
         :specialIndex="specialIndex"
         :nextItem="nextItem"
         :prevItem="prevItem"
-        :openModal="openModal"
+        :toggleModal="toggleModal"
       />
       <!-- Right Side` -->
       <ProductDescription />
@@ -67,7 +64,7 @@ const closeModal = () => {
       :modalVisible="modalVisible"
       :changeTab="changeTab"
       :activeTab="activeTab"
-      :closeModal="closeModal"
+      :toggleModal="toggleModal"
       :currentIndex="currentIndex"
       :currentItem="currentItem"
       :images="images"
