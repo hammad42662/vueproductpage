@@ -14,7 +14,7 @@ let currentIndex = ref(0)
 const activeTab = ref('videos')
 const specialIndex = ref(3)
 const modalVisible = ref(false)
-const isMobile = ref(window.innerWidth <= 1024)
+const isMobile = ref(window.innerWidth / window.devicePixelRatio <= 768)
 const currentItem = computed(() => images[currentIndex.value])
 const changeTab = (tab) => {
   activeTab.value = tab
@@ -43,7 +43,7 @@ const toggleModal = () => {
 }
 onMounted(() => {
   window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth <= 1024
+    isMobile.value = window.innerWidth <= 768
   })
 })
 </script>
