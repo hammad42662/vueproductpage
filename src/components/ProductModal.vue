@@ -7,13 +7,52 @@ const props = defineProps({
   currentIndex: Number,
   currentItem: Object,
   images: Object,
+  isMobile: Boolean,
   goToItem: Function
 })
 </script>
 <template>
+  <!-- Mobile Modal -->
   <div
-    v-if="props.modalVisible"
-    class="modal bg-white border fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg xs:hidden xs:landscape:hidden md:landscape:block md:block"
+    v-if="props.isMobile && props.modalVisible"
+    class="fixed inset-0 overflow-hidden w-screen h-full z-50"
+  >
+    <div
+      class="w-screen h-full bg-white border overflow-y-auto z-50 rounded-lg flex flex-col gap-36 justify-center items-center"
+    >
+      <button
+        @click="props.toggleModal"
+        class="absolute top-4 left-6 text-md font-poppins font-semibold rounded-md text-xs border shadow-sm py-2 px-3 text-gray-700"
+      >
+        Back
+      </button>
+      <div
+        v-if="props.activeTab === 'images'"
+        class="flex justify-center items-center w-4/5 overflow-y-scroll"
+      >
+        <img
+          v-if="props.currentIndex !== undefined"
+          :src="props.images[props.currentIndex].src"
+          :alt="props.images[props.currentIndex].alt"
+          class="w-48 h-64 mt-36"
+        />
+      </div>
+      <div class="flex justify-center gap-8 content-center">
+        <img
+          v-for="(item, index) in props.images"
+          :key="index"
+          @click="props.goToItem(index)"
+          :src="item.src"
+          class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-18 border"
+          :class="{ 'border-2 border-blue-500': index === props.currentIndex }"
+        />
+      </div>
+    </div>
+  </div>
+  <!-- Desktop Modal -->
+  <div
+    v-else-if="props.modalVisible"
+    class="modal bg-white border fixed inset-20 left-12 overflow-y-auto z-50 rounded-lg"
   >
     <div class="flex gap-4 pt-8 pl-16 space relative">
       <div class="flex gap-6 pb-3">

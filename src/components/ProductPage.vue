@@ -3,7 +3,7 @@ import ProductModal from './ProductModal.vue'
 import ProductDescription from './ProductDescription.vue'
 import ProductImage from './ProductImage.vue'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 const images = [
   { type: 'image', src: '/media/assets/front.jpg', alt: 'Image 1' },
   { type: 'image', src: '/media/assets/dimension.jpg', alt: 'Image 2' },
@@ -11,11 +11,11 @@ const images = [
   { type: 'video', src: '/media/assets/video-thumbnail.png', alt: 'video' }
 ]
 let currentIndex = ref(0)
-const currentItem = computed(() => images[currentIndex.value])
 const activeTab = ref('videos')
 const specialIndex = ref(3)
 const modalVisible = ref(false)
-
+const isMobile = ref(window.innerWidth <= 1024)
+const currentItem = computed(() => images[currentIndex.value])
 const changeTab = (tab) => {
   activeTab.value = tab
 }
@@ -41,6 +41,11 @@ const toggleModal = () => {
     activeTab.value = 'images'
   }
 }
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 1024
+  })
+})
 </script>
 <template>
   <main class="w-full">
@@ -69,6 +74,7 @@ const toggleModal = () => {
       :currentItem="currentItem"
       :images="images"
       :goToItem="goToItem"
+      :isMobile="isMobile"
     />
   </main>
 </template>
