@@ -70,15 +70,15 @@ const handleMouseLeave = () => {
       <div
         class="flex justify-center items-center w-4/5 h-screen relative overflow-y-scroll select-none"
         ref="props.content"
+        @touchstart="props.startTouch"
+        @touchmove="props.moveTouch"
+        @touchend="props.endTouch"
       >
         <img
           v-if="props.currentIndex !== undefined"
           :src="props.images[props.currentIndex].src"
           :alt="props.images[props.currentIndex].alt"
           class="w-48 h-64 mt-36 snap-x"
-          @touchstart="props.startTouch"
-          @touchmove="props.moveTouch"
-          @touchend="props.endTouch"
         />
       </div>
       <div class="flex justify-center gap-8 content-center">
