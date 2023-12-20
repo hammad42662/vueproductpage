@@ -11,13 +11,15 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div class="md:w-27 xs:w-full bg-white md:ml-72 md:mt-9 xs:mt-6 relative h-[500px]">
-    <div class="w-1/2 h-full object-contain relative -mt-20 xs:mt-2">
+  <div class="md:w-1/3 xs:w-screen bg-white md:ml-40 md:mt-9 xs:mt-6 relative h-[500px]">
+    <div
+      class="flex flex-col justify-center items-center md:w-64 xs:w-full h-full lg:-mt-2 xs:mt-10 xs:ml-0 sm:ml-0 md:mt-0 md:ml-1 lg:ml-28"
+    >
       <img
         :src="props.currentItem.src"
         :alt="currentItem.alt"
         @click="props.toggleModal"
-        class="max-w-2/2 h-full object-contain md:ml-24 xs:ml-28 cursor-pointer"
+        class="h-full object-contain w-full md:w-10/12 lg:w-full xs:w-9/12 md:ml-6 cursor-pointer"
       />
     </div>
     <div class="absolute inset-y-2/4 left-0 flex gap-x-4 items-center">
@@ -27,13 +29,13 @@ const props = defineProps({
       <div @click="props.nextItem" class="arrow right-arrow text-blue-900">&gt;</div>
     </div>
     <!-- Thumbnails -->
-    <div class="thumbnail-container justify-center gap-8 content-center -mt-16 xs:hidden md:flex">
+    <div class="flex justify-center gap-4 content-center -mt-16 xs:hidden md:flex">
       <img
         v-for="(item, index) in props.images"
         :key="index"
         @click="props.goToItem(index)"
         :src="item.src"
-        class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-18 border"
+        class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-6 border border-gray-400"
         :class="{ 'border-2 border-blue-500': index === props.currentIndex }"
       />
     </div>

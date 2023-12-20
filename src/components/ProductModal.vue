@@ -65,13 +65,13 @@ const handleMouseLeave = () => {
       </button>
       <div
         v-if="props.activeTab === 'images'"
-        class="flex justify-center items-center w-4/5 overflow-y-scroll"
+        class="flex justify-center items-center w-4/5 h-screen relative overflow-y-scroll select-none"
       >
         <img
           v-if="props.currentIndex !== undefined"
           :src="props.images[props.currentIndex].src"
           :alt="props.images[props.currentIndex].alt"
-          class="w-48 h-64 mt-36"
+          class="w-48 h-64 mt-36 snap-x"
         />
       </div>
       <div class="flex justify-center gap-8 content-center">
@@ -170,7 +170,7 @@ const handleMouseLeave = () => {
             v-if="props.currentIndex"
             :src="props.currentItem.src"
             :alt="props.currentItem.alt"
-            class="w-2/4 h-4/5 object-contain absolute left-1/3 top-80 m-2 -translate-y-1/2 -translate-x-1/2 poi"
+            class="w-2/4 h-4/5 object-contain absolute left-1/3 top-80 m-2 -translate-y-1/2 -translate-x-1/2"
             ref="magnifyingImg"
           />
         </div>
@@ -207,7 +207,7 @@ const handleMouseLeave = () => {
 <style>
 .modal {
   width: 95%;
-  height: 90%;
+  height: 80%;
   margin: 0 auto;
 }
 </style>

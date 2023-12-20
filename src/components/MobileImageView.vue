@@ -1,19 +1,11 @@
 <!-- <script>
-var magnifying_area = document.getElementById('magnifying_area')
-var magnifying_img = document.getElementById('magnifying_img')
-magnifying_area addEventListener("mousemove", function (event) {
-
-clientX = event.clientX - magnifying_area.offsetLeft
-    clientX = event.clientY - magnifying_area.offsetTop
-    mWidth = magnifying_area.offsetWidth
-    mHeight = magnifying_area.offsetHeight
-    clientX = clientX / mWidth * 100
-clientY = clientY / mHeight *100
-
-    magnifying_img.style.transform = 'translate(-'+clientX+'%,-'+clientY+'%) scale(2)'
-    // magnifying_img.style.transform = 'translate(-50%,-50%) scale(2)'
-});
-magnifying_area.addEventListener("mouseleave", function () {
-magnifying_img.style.transform = 'translate(-50%,-50%) scale(1)'
+const wrapper = document.querySelector('.wrapper')
+let pressed = false
+let startX = 0
+wrapper.addEventListener('mousedown', function (e) {
+  pressed = true
+  startX = e.clientX
+  this.style.cursor = 'grabbing'
+  console.log(startX)
 })
 </script> -->
