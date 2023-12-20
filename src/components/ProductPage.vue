@@ -3,7 +3,7 @@ import ProductModal from './ProductModal.vue'
 import ProductDescription from './ProductDescription.vue'
 import ProductImage from './ProductImage.vue'
 
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 const images = [
   { type: 'image', src: '/media/assets/front.jpg', alt: 'Image 1' },
   { type: 'image', src: '/media/assets/dimension.jpg', alt: 'Image 2' },
@@ -47,6 +47,68 @@ onMounted(() => {
     isMobile.value = window.innerWidth <= 768
   })
 })
+// --------Touch Event----------
+const content = ref(null)
+let initialX = ref(null)
+let endX = ref(null)
+let initialStart = ref(0)
+let initialEnd = ref(0)
+// Measure translate pixels
+let current = ref(0)
+
+// Store slide number
+let slide = ref(0)
+
+const appHeight = () => {
+  document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
+  current.value = -slide.value * window.innerHeight
+}
+
+const startTouch = (evt) => {
+  initialStart.value = Date.now()
+  initialX.value = evt.touches[0].clientX
+}
+
+const endTouch = (evt) => {
+  initialEnd.value = Date.now()
+  endX.value = evt.changedTouches[0].clientX
+  if (initialEnd.value - initialStart.value < 800) {
+    swipe()
+  }
+}
+
+const swipe = () => {
+  const deltaX = endX.value - initialX.value
+  // Swipe right
+  if (deltaX > 100) {
+    if (current.value !== -(window.innerHeight * 5)) {
+      current.value -= window.innerHeight
+      currentIndex.value = (currentIndex.value + 1) % images.length
+      console.log('Swiped right. New slide:', slide.value)
+    }
+  }
+  // Swipe left
+  else if (deltaX < -100) {
+    if (current.value !== 0) {
+      current.value += window.innerHeight
+      currentIndex.value--
+      console.log('Swiped left. New slide:', slide.value)
+    }
+  }
+}
+
+const moveTouch = (e) => {
+  e.preventDefault()
+}
+onMounted(() => {
+  content.value = document.querySelector('.content')
+  window.addEventListener('resize', appHeight)
+  appHeight()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', appHeight)
+})
 </script>
 <template>
   <main class="w-full">
@@ -76,6 +138,10 @@ onMounted(() => {
       :images="images"
       :goToItem="goToItem"
       :isMobile="isMobile"
+      :startTouch="startTouch"
+      :endTouch="endTouch"
+      :moveTouch="moveTouch"
+      :content="content"
     />
   </main>
 </template>

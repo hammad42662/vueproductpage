@@ -9,7 +9,11 @@ const props = defineProps({
   currentItem: Object,
   images: Object,
   isMobile: Boolean,
-  goToItem: Function
+  goToItem: Function,
+  startTouch: Function,
+  endTouch: Function,
+  moveTouch: Function,
+  content: Boolean
 })
 const magnifyingArea = ref(null)
 const magnifyingImg = ref(null)
@@ -30,47 +34,7 @@ const handleClick = (event) => {
   // Add the mouseleave event listener to reset the transformation when leaving the area
   magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
 }
-const content = ref(null)
-const current = ref(0)
-const slide = ref(0)
-let initialY = null
-let endY = null
-let initialStart = 0
-let initialEnd = 0
-const startTouch = (e) => {
-  initialStart = Date.now()
-  initialY = e.touches[0].clientY
-}
 
-const endTouch = (e) => {
-  initialEnd = Date.now()
-  endY = e.changedTouches[0].clientY
-
-  if (initialEnd - initialStart < 800) {
-    swipe()
-  }
-}
-
-const swipe = () => {
-  // Swipe up
-  if (endY - initialY < -50) {
-    if (current.value !== -(window.innerHeight * 5)) {
-      current.value -= window.innerHeight
-      slide.value++
-    }
-    // Swipe down
-  } else if (endY - initialY > 50) {
-    if (current.value !== 0) {
-      current.value += window.innerHeight
-      slide.value--
-    }
-  }
-  content.value.style.transform = `translateY(${current.value}px)`
-}
-
-const moveTouch = (e) => {
-  e.preventDefault()
-}
 const handleMouseMove = (event) => {
   const clientX = event.clientX - magnifyingArea.value.offsetLeft
   const clientY = event.clientY - magnifyingArea.value.offsetTop
@@ -105,17 +69,17 @@ const handleMouseLeave = () => {
       </button>
       <div
         v-if="props.activeTab === 'images'"
-        ref="content"
-        @touchstart="startTouch"
-        @touchend="endTouch"
-        @touchmove="moveTouch"
         class="flex justify-center items-center w-4/5 h-screen relative overflow-y-scroll select-none"
+        ref="props.content"
       >
         <img
           v-if="props.currentIndex !== undefined"
           :src="props.images[props.currentIndex].src"
           :alt="props.images[props.currentIndex].alt"
           class="w-48 h-64 mt-36 snap-x"
+          @touchstart="props.startTouch"
+          @touchmove="props.moveTouch"
+          @touchend="props.endTouch"
         />
       </div>
       <div class="flex justify-center gap-8 content-center">
