@@ -16,6 +16,7 @@ const specialIndex = ref(3)
 const modalVisible = ref(false)
 const isMobile = ref(window.innerWidth / window.devicePixelRatio <= 768)
 const currentItem = computed(() => images[currentIndex.value])
+
 const changeTab = (tab) => {
   activeTab.value = tab
 }
