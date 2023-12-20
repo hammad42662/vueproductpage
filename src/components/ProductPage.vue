@@ -83,7 +83,7 @@ const swipe = () => {
   if (deltaX > 100) {
     if (currentIndex.value !== images.length - 1) {
       current.value -= window.innerWidth
-      currentIndex.value = (currentIndex.value + 1) % images.length
+      currentIndex.value = (currentIndex.value - 1 + images.length) % images.length
       console.log('Swiped right. New slide:', currentIndex.value)
     }
   }
@@ -91,7 +91,8 @@ const swipe = () => {
   else if (deltaX < -100) {
     if (currentIndex.value !== 0) {
       current.value += window.innerWidth
-      currentIndex.value = (currentIndex.value - 1 + images.length) % images.length
+
+      currentIndex.value = (currentIndex.value + 1) % images.length
       console.log('Swiped left. New slide:', currentIndex.value)
     }
   }

@@ -68,7 +68,6 @@ const handleMouseLeave = () => {
         Back
       </button>
       <div
-        v-if="props.activeTab === 'images'"
         class="flex justify-center items-center w-4/5 h-screen relative overflow-y-scroll select-none"
         ref="props.content"
       >
