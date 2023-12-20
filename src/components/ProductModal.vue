@@ -174,7 +174,7 @@ const handleMouseLeave = () => {
           @click="handleClick"
         >
           <img
-            v-if="props.currentIndex"
+            v-if="props.currentIndex !== undefined"
             :src="props.currentItem.src"
             :alt="props.currentItem.alt"
             class="w-2/4 h-4/5 object-contain absolute left-1/3 top-80 m-2 -translate-y-1/2 -translate-x-1/2"

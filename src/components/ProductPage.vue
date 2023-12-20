@@ -79,21 +79,18 @@ const endTouch = (evt) => {
 
 const swipe = () => {
   const deltaX = endX.value - initialX.value
-  // Swipe right
-  if (deltaX > 100) {
-    if (currentIndex.value !== images.length - 1) {
-      current.value -= window.innerWidth
-      currentIndex.value = (currentIndex.value + 1) % images.length
-      console.log('Swiped right. New slide:', currentIndex.value)
-    }
-  }
-  // Swipe left
-  else if (deltaX < -100) {
-    if (currentIndex.value !== 0) {
-      current.value += window.innerWidth
-      currentIndex.value = (currentIndex.value - 1 + images.length) % images.length
-      console.log('Swiped left. New slide:', currentIndex.value)
-    }
+  const threshold = 100
+
+  if (deltaX > threshold && currentIndex.value > 0) {
+    // Swipe right
+    current.value -= window.innerWidth
+    currentIndex.value -= 1
+    console.log('Swiped right. New slide:', currentIndex.value)
+  } else if (deltaX < -threshold && currentIndex.value < images.length - 1) {
+    // Swipe left
+    current.value += window.innerWidth
+    currentIndex.value += 1
+    console.log('Swiped left. New slide:', currentIndex.value)
   }
 }
 const moveTouch = (e) => {
