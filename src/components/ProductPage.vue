@@ -81,22 +81,21 @@ const swipe = () => {
   const deltaX = endX.value - initialX.value
   // Swipe right
   if (deltaX > 100) {
-    if (current.value !== -(window.innerHeight * 5)) {
-      current.value -= window.innerHeight
+    if (currentIndex.value !== images.length - 1) {
+      current.value -= window.innerWidth
       currentIndex.value = (currentIndex.value + 1) % images.length
-      console.log('Swiped right. New slide:', slide.value)
+      console.log('Swiped right. New slide:', currentIndex.value)
     }
   }
   // Swipe left
   else if (deltaX < -100) {
-    if (current.value !== 0) {
-      current.value += window.innerHeight
-      currentIndex.value--
-      console.log('Swiped left. New slide:', slide.value)
+    if (currentIndex.value !== 0) {
+      current.value += window.innerWidth
+      currentIndex.value = (currentIndex.value - 1 + images.length) % images.length
+      console.log('Swiped left. New slide:', currentIndex.value)
     }
   }
 }
-
 const moveTouch = (e) => {
   e.preventDefault()
 }
