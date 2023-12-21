@@ -9,6 +9,7 @@ const props = defineProps({
   goToItem: Function,
   specialIndex: Number,
   thumbnailImg: Object,
+  isDesktop: Boolean,
   currentIndex: Number
 })
 const image = ref(null)
@@ -50,7 +51,7 @@ const handleMouseOut = () => {
           @click="props.toggleModal"
           class="image h-full object-contain w-full md:w-10/12 lg:w-full xs:w-9/12 md:ml-6 cursor-pointer"
         />
-        <span class="lens" ref="lens"></span>
+        <span v-if="props.isDesktop" class="lens" ref="lens"></span>
       </span>
       <div class="w-full h-full relative top-22 left-52">
         <div
@@ -107,7 +108,7 @@ const handleMouseOut = () => {
   height: 500px;
   border: 1px solid black;
   position: absolute;
-  background-size: 100%, 100%;
+  background-size: 800%, 800%;
   top: 2%;
   left: 80%;
   display: none;
@@ -117,9 +118,8 @@ const handleMouseOut = () => {
 .lens {
   width: 150px;
   height: 150px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(37, 166, 226, 0.4);
   position: absolute;
-  border: 3px solid black;
   transform: translate(-50%, -50%);
   pointer-events: none;
   display: none;

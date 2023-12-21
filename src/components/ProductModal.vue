@@ -14,6 +14,7 @@ const props = defineProps({
   endTouch: Function,
   moveTouch: Function,
   thumbnailImg: Object,
+  handleTouchStart: Function,
   content: Boolean
 })
 const magnifyingArea = ref(null)
@@ -47,6 +48,7 @@ const handleClick = (event) => {
     const transformedY = (clientY / mHeight) * 100
 
     magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+    magnifyingImg.value.style.cursor = 'zoom-in'
 
     // Add the mousemove event listener after the click
     window.addEventListener('mousemove', handleMouseMove)
@@ -68,13 +70,15 @@ const handleMouseMove = (event) => {
   const transformedY = (clientY / mHeight) * 100
 
   magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
-  magnifyingArea.value.style.overflowY = 'hidden'
+  magnifyingImg.value.style.cursor = 'zoom-out'
 }
 
 const handleMouseLeave = () => {
   magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
 
   window.removeEventListener('mousemove', handleMouseMove)
+  magnifyingImg.value.style.cursor = 'auto'
+  isZoomed = false
 }
 </script>
 <template>
@@ -102,6 +106,7 @@ const handleMouseLeave = () => {
       >
         <img
           v-if="props.currentIndex !== undefined"
+          @touchstart="props.handleTouchStart"
           :src="props.images[props.currentIndex].src"
           :alt="props.images[props.currentIndex].alt"
           class="w-48 h-64 mt-36 snap-x"
