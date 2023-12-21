@@ -13,26 +13,49 @@ const props = defineProps({
   startTouch: Function,
   endTouch: Function,
   moveTouch: Function,
+  thumbnailImg: Object,
   content: Boolean
 })
 const magnifyingArea = ref(null)
 const magnifyingImg = ref(null)
+let isZoomed = false
+let lastClickTime = 0
+const debounceDelay = 200 // Adjust this delay as needed
+
 const handleClick = (event) => {
-  const clientX = event.clientX - magnifyingArea.value.offsetLeft
-  const clientY = event.clientY - magnifyingArea.value.offsetTop
-  const mWidth = magnifyingArea.value.offsetWidth
-  const mHeight = magnifyingArea.value.offsetHeight
+  const currentTime = Date.now()
 
-  const transformedX = (clientX / mWidth) * 100
-  const transformedY = (clientY / mHeight) * 100
+  // Check if it's been less than the debounce delay since the last click
+  if (currentTime - lastClickTime < debounceDelay) {
+    return
+  }
 
-  magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+  lastClickTime = currentTime
 
-  // Add the mousemove event listener after the click
-  window.addEventListener('mousemove', handleMouseMove)
+  if (isZoomed) {
+    // If already zoomed, reset the transformation
+    magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
+    isZoomed = false
+  } else {
+    // If not zoomed, apply the zoom transformation
+    const clientX = event.clientX - magnifyingArea.value.offsetLeft
+    const clientY = event.clientY - magnifyingArea.value.offsetTop
+    const mWidth = magnifyingArea.value.offsetWidth
+    const mHeight = magnifyingArea.value.offsetHeight
 
-  // Add the mouseleave event listener to reset the transformation when leaving the area
-  magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
+    const transformedX = (clientX / mWidth) * 100
+    const transformedY = (clientY / mHeight) * 100
+
+    magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+
+    // Add the mousemove event listener after the click
+    window.addEventListener('mousemove', handleMouseMove)
+
+    // Add the mouseleave event listener to reset the transformation when leaving the area
+    magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
+
+    isZoomed = true
+  }
 }
 
 const handleMouseMove = (event) => {
@@ -45,14 +68,17 @@ const handleMouseMove = (event) => {
   const transformedY = (clientY / mHeight) * 100
 
   magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
+  magnifyingArea.value.style.overflowY = 'hidden'
 }
 
 const handleMouseLeave = () => {
   magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
+
   window.removeEventListener('mousemove', handleMouseMove)
 }
 </script>
 <template>
+  <div class=""></div>
   <!-- Mobile Modal -->
   <div
     v-if="props.isMobile && props.modalVisible"
@@ -199,10 +225,10 @@ const handleMouseLeave = () => {
         </div>
         <div class="flex gap-4 content-center -mt-16">
           <div
-            v-for="(item, index) in props.images"
+            v-for="(item, index) in props.thumbnailImg"
             :key="index"
             @click="props.goToItem(index)"
-            class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-28 border border-gray-400"
+            class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-28 border-2 border-gray-400 hover:border-blue-800"
             :class="{ 'border-2 border-orange-400': index === props.currentIndex }"
             :style="{ backgroundImage: `url(${item.src})` }"
           ></div>

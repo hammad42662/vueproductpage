@@ -10,6 +10,20 @@ const images = [
   { type: 'image', src: '/media/assets/poster.jpg', alt: 'Image 3' },
   { type: 'video', src: '/media/assets/video-thumbnail.png', alt: 'video' }
 ]
+const thumbnailImg = [
+  { type: 'image', src: '/media/assets/thumbnails/product-image-thumbnail.jpeg', alt: 'Image 1' },
+  {
+    type: 'image',
+    src: '/media/assets/thumbnails/product-image-front-thumbnail.jpeg',
+    alt: 'Image 1'
+  },
+  {
+    type: 'image',
+    src: '/media/assets/thumbnails/product-image-back-thumbnail.jpeg',
+    alt: 'Image 1'
+  },
+  { type: 'video', src: '/media/assets/video-thumbnail.png', alt: 'video' }
+]
 let currentIndex = ref(0)
 const activeTab = ref('videos')
 const specialIndex = ref(3)
@@ -119,6 +133,7 @@ onUnmounted(() => {
         :nextItem="nextItem"
         :prevItem="prevItem"
         :toggleModal="toggleModal"
+        :thumbnailImg="thumbnailImg"
       />
       <!-- Right Side` -->
       <ProductDescription />
@@ -138,6 +153,7 @@ onUnmounted(() => {
       :endTouch="endTouch"
       :moveTouch="moveTouch"
       :content="content"
+      :thumbnailImg="thumbnailImg"
     />
   </main>
 </template>

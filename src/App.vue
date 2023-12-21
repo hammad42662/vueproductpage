@@ -4,6 +4,8 @@ import ProductPage from './components/ProductPage.vue'
 </script>
 
 <template>
-  <SiteNavigation />
-  <ProductPage />
+  <div class="w-full h-full">
+    <SiteNavigation />
+    <ProductPage />
+  </div>
 </template>
