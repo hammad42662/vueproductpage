@@ -14,7 +14,6 @@ const props = defineProps({
   endTouch: Function,
   moveTouch: Function,
   thumbnailImg: Object,
-  handleTouchStart: Function,
   content: Boolean
 })
 const magnifyingArea = ref(null)
@@ -106,7 +105,6 @@ const handleMouseLeave = () => {
       >
         <img
           v-if="props.currentIndex !== undefined"
-          @touchstart="props.handleTouchStart"
           :src="props.images[props.currentIndex].src"
           :alt="props.images[props.currentIndex].alt"
           class="w-48 h-64 mt-36 snap-x"

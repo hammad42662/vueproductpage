@@ -125,72 +125,12 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', appHeight)
 })
-//  Mobile tap zoom
-let touchZoomedIn = false
-let lastTap = 0
-const handleTouchStart = (e) => {
-  if (window.innerWidth < 768 && 'ontouchstart' in window) {
-    const now = new Date().getTime()
-    const delta = now - lastTap
-
-    if (delta < 300 && delta > 0) {
-      // Double tap detected
-      handleDoubleTap(e)
-      e.preventDefault() // Prevent the default behavior (e.g., zooming on some devices)
-    }
-
-    lastTap = now
-  }
-}
-
-const handleDoubleTap = (e) => {
-  // Toggle zoom state
-  touchZoomedIn = !touchZoomedIn
-
-  const scale = touchZoomedIn ? 2.0 : 1.0 // Adjust the zoom scale as needed
-
-  const x = e.touches[0].clientX - currentItem.value.offsetLeft
-  const y = e.touches[0].clientY - currentItem.value.offsetTop
-
-  const offsetX = (x - currentItem.value.width / 2) * -scale + currentItem.value.width / 2
-  const offsetY = (y - currentItem.value.height / 2) * -scale + currentItem.value.height / 2
-
-  currentItem.value.style.transform = `scale(${scale})`
-  currentItem.value.style.transformOrigin = `${offsetX}px ${offsetY}px`
-}
-
-// Function to toggle the feature based on window width and touch support
-const toggleFeatureVisibility = () => {
-  if (window.innerWidth < 768 && 'ontouchstart' in window) {
-    // If window width is less than 768 pixels and touch is supported, enable the feature
-    window.addEventListener('touchstart', handleTouchStart)
-  } else {
-    // If window width is 768 pixels or more or touch is not supported, disable the feature
-    window.removeEventListener('touchstart', handleTouchStart)
-    touchZoomedIn = false // Reset zoom state
-    if (currentItem.value) {
-      currentItem.value.style.transform = 'none' // Reset transform
-    }
-  }
-}
-
-// Call the toggle function on component mount
-onMounted(() => {
-  toggleFeatureVisibility()
-})
-
-// Add an event listener to react to window resize
-window.addEventListener('resize', toggleFeatureVisibility)
-
-// Clean up event listeners on component unmount
-onUnmounted(() => {
-  window.removeEventListener('resize', toggleFeatureVisibility)
-  window.removeEventListener('touchstart', handleTouchStart)
-})
 </script>
 <template>
   <main class="w-full">
-    <div class="flex flex-row xl:flex-row lg:flex-row md:flex-row xs:flex-col gap-32">
+    <div
+      class="flex flex-row justify-start h-full w-full py-10 xl:flex-row lg:flex-row md:flex-row xs:flex-col gap-0 overflow-hidden"
+    >
       <!-- left side -->
       <ProductImage
         :currentIndex="currentIndex"
@@ -223,7 +163,6 @@ onUnmounted(() => {
       :moveTouch="moveTouch"
       :content="content"
       :thumbnailImg="thumbnailImg"
-      :handleTouchStart="handleTouchStart"
     />
   </main>
 </template>

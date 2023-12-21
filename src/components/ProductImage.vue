@@ -19,13 +19,13 @@ const handleMouseMove = (e) => {
   const x = e.clientX - image.value.offsetLeft
   const y = e.clientY - image.value.offsetTop
 
-  const scale = 2.2 // Adjust the zoom scale as needed
+  const scale = 3 // Adjust the zoom scale as needed
 
   const offsetX = (x - 1000 / 2 / 6) * -scale + 500
   const offsetY = (y - 500 / 2 / 6) * -scale + 500
 
   lens.value.style.display = 'block'
-  lens.value.style.left = x - 230 + 'px'
+  lens.value.style.left = x + 'px'
   lens.value.style.top = y - 120 + 'px'
   preview.value.style.display = 'block'
   preview.value.style.backgroundPosition = `${offsetX}px ${offsetY}px`
@@ -37,23 +37,29 @@ const handleMouseOut = () => {
 }
 </script>
 <template>
-  <div class="md:w-1/3 xs:w-screen bg-white md:ml-40 md:mt-9 xs:mt-6 relative h-[500px]">
-    <div
-      class="relative flex flex-col justify-center items-center md:w-64 xs:w-full h-full lg:-mt-2 xs:mt-10 xs:ml-0 sm:ml-0 md:mt-0 md:ml-1 lg:ml-28"
-      @mousemove="handleMouseMove"
-      @mouseout="handleMouseOut"
-    >
-      <span class="imageContainer">
+  <section class="w-2/4 flex flex-col items-center justify-center relative">
+    <div class="bg-white relative w-3/5 h-full md:mr-30 xs:mr-0">
+      <div class="w-full h-full flex justify-center items-center flex-col gap-9">
         <img
           ref="image"
           :src="props.currentItem.src"
           :alt="currentItem.alt"
           @click="props.toggleModal"
-          class="image h-full object-contain w-full md:w-10/12 lg:w-full xs:w-9/12 md:ml-6 cursor-pointer"
+          @mousemove="handleMouseMove"
+          @mouseout="handleMouseOut"
+          class="w-2/5 block mx-auto"
         />
         <span v-if="props.isDesktop" class="lens" ref="lens"></span>
-      </span>
-      <div class="w-full h-full relative top-22 left-52">
+        <div class="absolute inset-y-2/4 left-0 flex gap-x-4 items-center">
+          <div @click="props.prevItem" class="arrow left-arrow text-blue-900">&lt;</div>
+        </div>
+        <div class="absolute inset-y-2/4 right-0 flex gap-x-4 items-center">
+          <div @click="props.nextItem" class="arrow right-arrow text-blue-900">&gt;</div>
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="w-full h-full md:block xs:hidden sm:hidden">
         <div
           :style="{ backgroundImage: `url('${props.currentItem.src}')` }"
           :alt="currentItem.alt"
@@ -62,25 +68,20 @@ const handleMouseOut = () => {
         ></div>
       </div>
     </div>
-    <div class="absolute inset-y-2/4 left-0 flex gap-x-4 items-center">
-      <div @click="props.prevItem" class="arrow left-arrow text-blue-900">&lt;</div>
-    </div>
-    <div class="absolute inset-y-2/4 right-0 flex gap-x-4 items-center">
-      <div @click="props.nextItem" class="arrow right-arrow text-blue-900">&gt;</div>
-    </div>
-    <!-- Thumbnails -->
-    <div class="flex justify-center gap-4 content-center -mt-16 xs:hidden md:flex">
+    <div
+      class="flex relative justify-center gap-4 content-center xs:hidden md:flex w-3/5 bg-white cursor-pointer"
+    >
       <img
         v-for="(item, index) in props.thumbnailImg"
         :key="index"
         @click="props.goToItem(index)"
         :src="item.src"
-        class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-6 border-2 border-gray-400 hover:border-blue-800"
+        class="w-1/12 block mt-6 hover:border-blue-800"
         :class="{ 'border-2 border-orange-400': index === props.currentIndex }"
       />
     </div>
     <!-- Dots -->
-    <div class="dot-container flex justify-center mt-9">
+    <div class="dot-container relative flex justify-center mt-9">
       <div
         v-for="(item, index) in props.images"
         :key="index"
@@ -92,7 +93,7 @@ const handleMouseOut = () => {
         }"
       ></div>
     </div>
-  </div>
+  </section>
 </template>
 <style>
 .imageContainer {
@@ -104,13 +105,13 @@ const handleMouseOut = () => {
 
 .preview {
   background-color: white;
-  width: 40rem;
-  height: 500px;
+  width: 50rem;
+  height: 50rem;
   border: 1px solid black;
   position: absolute;
   background-size: 800%, 800%;
-  top: 2%;
-  left: 80%;
+  top: -15%;
+  left: 130%;
   display: none;
   background-repeat: no-repeat;
   background-size: cover;
