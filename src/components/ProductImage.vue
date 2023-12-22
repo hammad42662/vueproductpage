@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { useImageZoom } from './useImageZoom'
 const props = defineProps({
   currentItem: Object,
   toggleModal: Function,
@@ -12,35 +12,14 @@ const props = defineProps({
   isDesktop: Boolean,
   currentIndex: Number
 })
-const image = ref(null)
-const lens = ref(null)
-const preview = ref(null)
-const handleMouseMove = (e) => {
-  const x = e.clientX - image.value.offsetLeft
-  const y = e.clientY - image.value.offsetTop
 
-  const scale = 3 // Adjust the zoom scale as needed
-
-  const offsetX = (x - 1000 / 2 / 6) * -scale + 500
-  const offsetY = (y - 500 / 2 / 6) * -scale + 500
-
-  lens.value.style.display = 'block'
-  lens.value.style.left = x + 'px'
-  lens.value.style.top = y - 80 + 'px'
-  preview.value.style.display = 'block'
-  preview.value.style.backgroundPosition = `${offsetX}px ${offsetY}px`
-}
-
-const handleMouseOut = () => {
-  lens.value.style.display = 'none'
-  preview.value.style.display = 'none'
-}
+const { image, lens, preview, handleMouseMove, handleMouseOut } = useImageZoom()
 </script>
 <template>
   <section
     class="w-2/4 md:w-2/4 xs:w-full md:h-full xs:h-full flex flex-col items-center justify-start relative"
   >
-    <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-full md:mr-30 xs:mr-0">
+    <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-105 md:mr-30 xs:mr-0">
       <div class="w-full h-full flex justify-center items-center flex-col gap-19 overflow-hidden">
         <img
           ref="image"
@@ -62,7 +41,7 @@ const handleMouseOut = () => {
       <div class="w-full h-full md:block xs:hidden sm:hidden">
         <div
           :style="{ backgroundImage: `url('${props.currentItem.src}')` }"
-          :alt="currentItem.alt"
+          :alt="props.currentItem.alt"
           class="preview"
           ref="preview"
         ></div>
