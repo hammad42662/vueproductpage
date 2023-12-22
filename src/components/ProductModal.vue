@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import ModalImageContent from './ModalImageContent.vue'
+import ModalVideoContent from './ModalVideoContent.vue'
+
 const props = defineProps({
   modalVisible: Boolean,
   changeTab: Function,
@@ -16,72 +18,8 @@ const props = defineProps({
   thumbnailImg: Object,
   content: Boolean
 })
-const magnifyingArea = ref(null)
-const magnifyingImg = ref(null)
-let isZoomed = false
-let lastClickTime = 0
-const debounceDelay = 200 // Adjust this delay as needed
-
-const handleClick = (event) => {
-  const currentTime = Date.now()
-
-  // Check if it's been less than the debounce delay since the last click
-  if (currentTime - lastClickTime < debounceDelay) {
-    return
-  }
-
-  lastClickTime = currentTime
-
-  if (isZoomed) {
-    // If already zoomed, reset the transformation
-    magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
-    isZoomed = false
-  } else {
-    // If not zoomed, apply the zoom transformation
-    const clientX = event.clientX - magnifyingArea.value.offsetLeft
-    const clientY = event.clientY - magnifyingArea.value.offsetTop
-    const mWidth = magnifyingArea.value.offsetWidth
-    const mHeight = magnifyingArea.value.offsetHeight
-
-    const transformedX = (clientX / mWidth) * 100
-    const transformedY = (clientY / mHeight) * 100
-
-    magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
-    magnifyingImg.value.style.cursor = 'zoom-in'
-
-    // Add the mousemove event listener after the click
-    window.addEventListener('mousemove', handleMouseMove)
-
-    // Add the mouseleave event listener to reset the transformation when leaving the area
-    magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
-
-    isZoomed = true
-  }
-}
-
-const handleMouseMove = (event) => {
-  const clientX = event.clientX - magnifyingArea.value.offsetLeft
-  const clientY = event.clientY - magnifyingArea.value.offsetTop
-  const mWidth = magnifyingArea.value.offsetWidth
-  const mHeight = magnifyingArea.value.offsetHeight
-
-  const transformedX = (clientX / mWidth) * 100
-  const transformedY = (clientY / mHeight) * 100
-
-  magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
-  magnifyingImg.value.style.cursor = 'zoom-out'
-}
-
-const handleMouseLeave = () => {
-  magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
-
-  window.removeEventListener('mousemove', handleMouseMove)
-  magnifyingImg.value.style.cursor = 'auto'
-  isZoomed = false
-}
 </script>
 <template>
-  <div class=""></div>
   <!-- Mobile Modal -->
   <div
     v-if="props.isMobile && props.modalVisible"
@@ -153,91 +91,14 @@ const handleMouseLeave = () => {
     </div>
     <hr class="-mt-1 border w-11/12 ml-10 mb-2" />
     <!-- Video Content -->
-    <div class="flex flex-row" v-if="props.activeTab === 'videos'">
-      <div class="flex flex-col overflow-y-scroll w-9/12 items-center mt-4 ml-3">
-        <video class="w-62 h-full" controls>
-          <source src="/media/videos/productvideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div class="w-70 h-12 bg-gray-100 flex flex-row justify-end">
-          <button>
-            <img
-              src="/media/icons/share-icon.svg"
-              alt="share icon"
-              aria-label="Click to share video"
-              class="w-5 mr-3 mt-2"
-            />
-          </button>
-        </div>
-        <div class="self-start ml-48">
-          <h1 class="font-poopins font-regular text-lg mt-2 mb-2">Samsung Galaxy S23+</h1>
-          <h2 class="text-xs">Samsung Mobile (UK) - MI</h2>
-        </div>
-      </div>
-      <div class="w-2/6 flex flex-col">
-        <p
-          class="border-0 rounded bg-gray-100 text-xs font-poppins font-semibold px-4 py-2 ml-2 mt-4 mb-3 w-4/5"
-        >
-          Videos for this product
-        </p>
-        <div class="flex flex-row ml-6">
-          <img
-            src="/media/assets/video-thumbnail.png"
-            alt="video thumbnail"
-            class="w-32 border-2 rounded border-yellow-500"
-          />
-          <div class="ml-2">
-            <p class="text-xs">Samsung Galaxy S23+</p>
-            <p class="text-xs">Samsung Mobile(UK) - MI</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ModalVideoContent :activeTab="props.activeTab" />
     <!-- Images Content -->
-    <div class="flex flex-row">
-      <div class="w-4/5 h-auto flex justify-center items-center">
-        <div
-          v-if="props.activeTab === 'images'"
-          class="items-center w-full h-full overflow-hidden"
-          ref="magnifyingArea"
-          @click="handleClick"
-        >
-          <img
-            v-if="props.currentIndex !== undefined"
-            :src="props.currentItem.src"
-            :alt="props.currentItem.alt"
-            class="w-2/4 h-4/5 object-contain absolute left-1/3 top-80 m-2 -translate-y-1/2 -translate-x-1/2"
-            ref="magnifyingImg"
-          />
-        </div>
-      </div>
-      <div class="w-1/4 h-full">
-        <div class="mt-5">
-          <p
-            class="text-md break-normal max-w-10 mr-20 font-poopins font-regular tracking-wide leading-tight"
-          >
-            Samsung Galaxy S23+ 5G Dual SIM Android Mobile Phone, 256GB, SIM Free Smartphone, Green,
-            3Y Extended Manufacturer Warranty (UK Version)
-          </p>
-        </div>
-        <div class="flex flex-col gap-3 mt-4">
-          <p class="text-xs text-gray-400 font-poppins font-thin">Colour: Lavender</p>
-          <p class="text-xs text-gray-400 font-poppins font-thin">Size Name: 512GB</p>
-          <p class="text-xs text-gray-400 font-poppins font-thin">Style Name: S23 Ultra</p>
-          <p class="text-xs text-gray-400 font-poppins font-thin">Pattern Name: Smartphone only</p>
-        </div>
-        <div class="flex gap-4 content-center -mt-16">
-          <div
-            v-for="(item, index) in props.thumbnailImg"
-            :key="index"
-            @click="props.goToItem(index)"
-            class="w-12 h-12 bg-contain bg-no-repeat bg-center mt-28 border-2 border-gray-400 hover:border-blue-800"
-            :class="{ 'border-2 border-orange-400': index === props.currentIndex }"
-            :style="{ backgroundImage: `url(${item.src})` }"
-          ></div>
-        </div>
-      </div>
-    </div>
+    <ModalImageContent
+      :thumbnailImg="props.thumbnailImg"
+      :goToItem="props.goToItem"
+      :currentItem="props.currentItem"
+      :activeTab="props.activeTab"
+    />
   </div>
 </template>
 <style>

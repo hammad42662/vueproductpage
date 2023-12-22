@@ -26,7 +26,7 @@ const handleMouseMove = (e) => {
 
   lens.value.style.display = 'block'
   lens.value.style.left = x + 'px'
-  lens.value.style.top = y - 120 + 'px'
+  lens.value.style.top = y - 80 + 'px'
   preview.value.style.display = 'block'
   preview.value.style.backgroundPosition = `${offsetX}px ${offsetY}px`
 }
@@ -41,7 +41,7 @@ const handleMouseOut = () => {
     class="w-2/4 md:w-2/4 xs:w-full md:h-full xs:h-full flex flex-col items-center justify-start relative"
   >
     <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-full md:mr-30 xs:mr-0">
-      <div class="w-full h-full flex justify-center items-center flex-col gap-19">
+      <div class="w-full h-full flex justify-center items-center flex-col gap-19 overflow-hidden">
         <img
           ref="image"
           :src="props.currentItem.src"
