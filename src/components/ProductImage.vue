@@ -37,9 +37,11 @@ const handleMouseOut = () => {
 }
 </script>
 <template>
-  <section class="w-2/4 flex flex-col items-center justify-center relative">
-    <div class="bg-white relative w-3/5 h-full md:mr-30 xs:mr-0">
-      <div class="w-full h-full flex justify-center items-center flex-col gap-9">
+  <section
+    class="w-2/4 md:w-2/4 xs:w-full md:h-full xs:h-full flex flex-col items-center justify-start relative"
+  >
+    <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-full md:mr-30 xs:mr-0">
+      <div class="w-full h-full flex justify-center items-center flex-col gap-19">
         <img
           ref="image"
           :src="props.currentItem.src"
@@ -47,7 +49,7 @@ const handleMouseOut = () => {
           @click="props.toggleModal"
           @mousemove="handleMouseMove"
           @mouseout="handleMouseOut"
-          class="w-2/5 block mx-auto"
+          class="md:w-2/5 xs:w-6/12 block mx-auto"
         />
         <span v-if="props.isDesktop" class="lens" ref="lens"></span>
         <div class="absolute inset-y-2/4 left-0 flex gap-x-4 items-center">
@@ -57,8 +59,6 @@ const handleMouseOut = () => {
           <div @click="props.nextItem" class="arrow right-arrow text-blue-900">&gt;</div>
         </div>
       </div>
-
-      <!-- Thumbnails -->
       <div class="w-full h-full md:block xs:hidden sm:hidden">
         <div
           :style="{ backgroundImage: `url('${props.currentItem.src}')` }"
@@ -68,6 +68,7 @@ const handleMouseOut = () => {
         ></div>
       </div>
     </div>
+    <!-- Thumbnails -->
     <div
       class="flex relative justify-center gap-4 content-center xs:hidden md:flex w-3/5 bg-white cursor-pointer"
     >

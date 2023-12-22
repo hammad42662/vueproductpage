@@ -129,7 +129,7 @@ onUnmounted(() => {
 <template>
   <main class="w-full">
     <div
-      class="flex flex-row justify-start h-full w-full py-10 xl:flex-row lg:flex-row md:flex-row xs:flex-col gap-0 overflow-hidden"
+      class="flex flex-row justify-start h-full w-full xl:flex-row lg:flex-row md:flex-row xs:flex-col gap-0 overflow-hidden"
     >
       <!-- left side -->
       <ProductImage
