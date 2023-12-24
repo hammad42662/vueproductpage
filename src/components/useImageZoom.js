@@ -9,7 +9,7 @@ export function useImageZoom() {
     const x = e.clientX - image.value.offsetLeft
     const y = e.clientY - image.value.offsetTop
 
-    const scale = 3 // Adjust the zoom scale as needed
+    const scale = 3
 
     const offsetX = (x - 1000 / 2 / 6) * -scale + 500
     const offsetY = (y - 500 / 2 / 6) * -scale + 500

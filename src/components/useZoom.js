@@ -4,12 +4,11 @@ export function useZoom() {
   const magnifyingImg = ref(null)
   let isZoomed = false
   let lastClickTime = 0
-  const debounceDelay = 200 // Adjust this delay as needed
+  const debounceDelay = 200
 
   const handleClick = (event) => {
     const currentTime = Date.now()
 
-    // Check if it's been less than the debounce delay since the last click
     if (currentTime - lastClickTime < debounceDelay) {
       return
     }
@@ -33,10 +32,8 @@ export function useZoom() {
       magnifyingImg.value.style.transform = `translate(-${transformedX}%, -${transformedY}%) scale(2)`
       magnifyingImg.value.style.cursor = 'zoom-in'
 
-      // Add the mousemove event listener after the click
       window.addEventListener('mousemove', handleMouseMove)
 
-      // Add the mouseleave event listener to reset the transformation when leaving the area
       magnifyingArea.value.addEventListener('mouseleave', handleMouseLeave, { once: true })
 
       isZoomed = true
