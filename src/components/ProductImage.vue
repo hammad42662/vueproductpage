@@ -19,7 +19,7 @@ const { image, lens, preview, handleMouseMove, handleMouseOut } = useImageZoom()
   <section
     class="w-2/4 md:w-2/4 xs:w-full md:h-full xs:h-full flex flex-col items-center justify-start relative"
   >
-    <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-105 md:mr-30 xs:mr-0">
+    <div class="bg-white relative md:w-3/5 md:h-105 xs:w-full xs:h-full md:mr-30 xs:mr-0">
       <div class="w-full h-full flex justify-center items-center flex-col gap-19 overflow-hidden">
         <img
           ref="image"

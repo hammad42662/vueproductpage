@@ -90,9 +90,9 @@ const props = defineProps({
       </button>
     </div>
     <hr class="-mt-1 border w-11/12 ml-10 mb-2" />
-    <!-- Video Content -->
+  
     <ModalVideoContent :activeTab="props.activeTab" />
-    <!-- Images Content -->
+ 
     <ModalImageContent
       :thumbnailImg="props.thumbnailImg"
       :goToItem="props.goToItem"

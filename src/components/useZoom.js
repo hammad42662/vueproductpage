@@ -15,8 +15,8 @@ export function useZoom() {
 
     lastClickTime = currentTime
 
+    // If already zoomed, reset the transformation
     if (isZoomed) {
-      // If already zoomed, reset the transformation
       magnifyingImg.value.style.transform = 'translate(-50%, -50%) scale(1)'
       isZoomed = false
     } else {

@@ -50,7 +50,6 @@ const goToItem = (index) => {
 const toggleModal = () => {
   modalVisible.value = !modalVisible.value
 
-  // Set active tab based on the type of the current item
   if (currentItem.value.type === 'video') {
     activeTab.value = 'videos'
   } else {
@@ -166,7 +165,3 @@ onUnmounted(() => {
     />
   </main>
 </template>
-
-<style scoped>
-/* Add your custom styles here */
-</style>
