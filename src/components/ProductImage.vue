@@ -38,6 +38,7 @@ const { image, lens, preview, handleMouseMove, handleMouseOut } = useImageZoom()
           <div @click="props.nextItem" class="arrow right-arrow text-blue-900">&gt;</div>
         </div>
       </div>
+      <!-- Zoom preview -->
       <div class="w-full h-full md:block xs:hidden sm:hidden">
         <div
           :style="{ backgroundImage: `url('${props.currentItem.src}')` }"
